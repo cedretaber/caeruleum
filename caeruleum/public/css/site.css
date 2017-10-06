@@ -1,4 +1,4 @@
-body {
+.cover {
   font-family: 'Helvetica Neue', Verdana, Helvetica, Arial, sans-serif;
   max-width: 600px;
   margin: 0 auto;
@@ -9,26 +9,44 @@ body {
   line-height: 1.5em;
 }
 
-h1, h2, h3 {
+h1.cover, h2.cover, h3.cover {
   color: #000;
 }
-h1 {
+h1.cover {
   font-size: 2.5em
 }
 
-h2 {
+h2.cover {
   font-size: 2em
 }
 
-h3 {
+h3.cover {
   font-size: 1.5em
 }
 
-a {
+a.cover {
   text-decoration: none;
   color: #09f;
 }
 
-a:hover {
+a.cover:hover {
   text-decoration: underline;
+}
+
+.book {
+  font-family: 'Yu Mincho', 'YuMincho', 'Hiragino Mincho ProN', 'Hiragino Mincho Pro', 'HGP明朝B', serif;
+  font-feature-settings: 'pkna';
+  font-size: 17px;
+  line-height: 1.9;
+  letter-spacing: 0.03em;
+  writing-mode: vertical-rl;
+}
+
+div.container.book {
+  margin-top: 3em;
+  margin-bottom: 3em;
+}
+
+p.book {
+  margin-left: 2em;
 }

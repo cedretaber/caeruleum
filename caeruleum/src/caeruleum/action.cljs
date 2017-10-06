@@ -7,7 +7,7 @@
 (defn- prepare-text [row-text]
   (->> row-text
        s/split-lines
-       (map-indexed (fn [idx txt] [:p {:key idx} txt]))))
+       (map-indexed (fn [idx txt] [:p.book {:key idx} txt]))))
 
 (defn load-file [file-name row-text]
   (let
