@@ -1,5 +1,6 @@
 (ns caeruleum.action
-  (:require [caeruleum.state :as state]
+  (:require [caeruleum.text.coordination :as co]
+            [caeruleum.state :as state]
             [clojure.string :as s]))
 
 (defonce iconv (js/require "iconv-lite"))
@@ -7,7 +8,7 @@
 (defn- prepare-text [row-text]
   (->> row-text
        s/split-lines
-       (map-indexed (fn [idx txt] [:p.book {:key idx} txt]))))
+       co/coordinate))
 
 (defn load-file [file-name row-text]
   (let
