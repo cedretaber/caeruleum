@@ -8,10 +8,13 @@
   (loop [[head & tail] prev
          target []]
     (cond
-      (= head ruby-sep) {:prev tail :target (s/join "" target)}
-      (= head replaced) {:prev tail :target "■"}
+      (= head ruby-sep) {:prev tail
+                         :target (s/join "" target)}
+      (= head replaced) {:prev tail
+                         :target "■"}
       (->> head str (re-find kanji) nil? not) (recur tail (cons head target))
-      :else {:prev (cons head tail) :target (s/join "" target)})))
+      :else {:prev (cons head tail)
+             :target (s/join "" target)})))
 
 (defn- append-temp [temp char acm]
   (let [e (->> temp
@@ -33,16 +36,43 @@
                        [_ next-head & next-tail] (drop-while #(not= "］" %) tail)]
                    (cond
                      (-> number nil? not) (let [n (mb->i number)
-                                                spaces [:span {:key (str "span-" last-key) :style {:margin-top (str n "em")}} ""]]
-                                            (recur (cons spaces (append-temp temp "" acm)) [] next-head next-tail (+ last-key 1)))
-                     (= head "＃") (recur acm temp next-head next-tail last-key)
-                     :else (recur acm (cons char temp) head tail last-key)))
+                                                spaces [:span {:key (str "span-" last-key)
+                                                               :style {:margin-top (str n "em")}}
+                                                        ""]]
+                                            (recur (cons spaces (append-temp temp "" acm))
+                                                   []
+                                                   next-head
+                                                   next-tail
+                                                   (+ last-key 1)))
+                     (= head "＃") (recur acm
+                                         temp
+                                         next-head
+                                         next-tail
+                                         last-key)
+                     :else (recur acm
+                                  (cons char temp)
+                                  head
+                                  tail
+                                  last-key)))
     (= char "《") (let [{:keys [prev target]} (search-target temp)
                        [ruby [_ next-head & next-tail]] (split-with #(not= "》" %) rest)]
-                   (recur (cons [:ruby {:key (str "ruby-" last-key)} [:rb {:key (str "rb-" last-key)} target] [:rt {:key (str "rt-" last-key)} ruby]] (append-temp prev "" acm)) [] next-head next-tail (+ last-key 1)))
-    :else (recur acm (cons char temp) head tail last-key)))
+                   (recur (cons [:ruby {:key (str "ruby-" last-key)}
+                                 [:rb {:key (str "rb-" last-key)} target]
+                                 [:rt {:key (str "rt-" last-key)} ruby]]
+                                (append-temp prev "" acm))
+                          []
+                          next-head
+                          next-tail
+                          (+ last-key 1)))
+    :else (recur acm
+                 (cons char temp)
+                 head
+                 tail
+                 last-key)))
 (defn- coordinate-line [[head & rest]]
-  (if (and (nil? head) (nil? rest)) "" (do-coordinate-line [] [] head rest 0)))
+  (if (and (nil? head) (nil? rest))
+    ""
+    (do-coordinate-line [] [] head rest 0)))
 
 (def bar "-------------------------------------------------------")
 (def end-of-text "底本：")
@@ -65,6 +95,7 @@
                                                      [])
                   :else (recur (+ line-cnt 1)
                                skipped
-                               (cons [:p.book {:key (str "line-" line-cnt)} (coordinate-line line)] acm)
+                               (cons [:p.book {:key (str "line-" line-cnt)} (coordinate-line line)]
+                                     acm)
                                rest)))]
     (concat [title author] texts)))
