@@ -5,8 +5,6 @@
             [caeruleum.state :as state]
             [caeruleum.action :as action]))
 
-; (enable-console-print!)
-
 (defn root []
   [main/main @state/state])
 

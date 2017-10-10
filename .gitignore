@@ -16,3 +16,5 @@ caeruleum/.repl
 caeruleum/.env
 /node_modules
 .idea
+.DS_Store
+caeruleum-darwin-x64/
